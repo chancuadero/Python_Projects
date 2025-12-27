@@ -10,3 +10,6 @@
 3. Hangman Game <br>
    Created a simple Hangman Game to practice implementing different list methods and indexing.<br>
    The goal was to familiarize with the usage of list methods and other built-in functions to successfully achieve the project's objectives.
+4. 21 Number Game<br>
+   Developed a simple 21 Number Game to practice using custom and built-in functions.<br>
+   The goal was to familiarize with using custom functions and improve logical thinking.<br>
