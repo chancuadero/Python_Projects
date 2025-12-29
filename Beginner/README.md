@@ -13,3 +13,6 @@
 4. [21 Number Game](number21_game.py)<br>
    Developed a simple 21 Number Game to practice using custom and built-in functions.<br>
    The goal was to familiarize with using custom functions and improve logical thinking.<br>
+5. [Rock-Paper-Sciccors Game](RPS_game.py)<br>
+   Created a simple Rock-Paper-Scissors game to practice using dictionaries, conditional statements, custom/built-in functions, and the random module.<br>
+   This project helped me improve my logical thinking and my ability to loop through dictionaries. My goal was to get comfortable using custom functions with multiple parameters and to ensure the program validates user input. I implemented logic so that if a user enters anything other than a digit, the program repeatedly asks for the correct input instead of crashing.<br>

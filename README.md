@@ -6,3 +6,4 @@ This repository is a collection of my Python projects to enhance my coding journ
 2. [Word Guessing game](Beginner/word_guessing.py)<br>
 3. [Hangman Game](Beginner/hangman_game.py)<br>
 4. [21 Number Game](Beginner/number21_game.py)<br>
+5. [Rock-Paper-Sciccors Game](Beginner/RPS_game.py)<br>
