@@ -1,0 +1,30 @@
+# --- Virtual Environments (Crucial) ---
+.venv/
+venv/
+env/
+myenv/
+bin/
+lib/
+include/
+
+# --- Python Clutter ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# --- Mac System Files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# --- IDE/Editor Settings ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Secrets/Config ---
+.env
