@@ -7,4 +7,6 @@ This repository is a collection of my Python projects to enhance my coding journ
 3. [Hangman Game](Beginner/hangman_game.py)<br>
 4. [21 Number Game](Beginner/number21_game.py)<br>
 5. [Rock-Paper-Sciccors Game](Beginner/RPS_game.py)<br>
-6. [Compare PDF](Beginner/compare_pdf.py)
+6. [Compare PDF](Beginner/compare_pdf.py)<br>
+7. [Dice Rolling Game](Beginner/dice_rolling_game.py)<br>
+8. [QR Code Generator](Beginner/qr_code_generator.py)
