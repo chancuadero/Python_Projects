@@ -15,7 +15,6 @@ list_set_num = list(map(int,str(set_num)))
 check_num = []
 count = 0
 tries = 0
-print(list_set_num)
 
 for x in range(len(list_set_num)):
     check_num.append('x')
@@ -31,7 +30,7 @@ while count < len(list_set_num):
             if list_set_num[i] == list_guess_num[i]:
                 check_num[i] = list_set_num[i]
                 count += 1
-        if list_guess_num[i] == check_num[i]:
+        if list_guess_num[i] == check_num[i] and len(list_set_num) == len(list_guess_num):
             break
         else:
             print(f"Not quite the number. You've guessed {count} digits correctly.")
