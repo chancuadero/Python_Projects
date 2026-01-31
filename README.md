@@ -9,4 +9,5 @@ This repository is a collection of my Python projects to enhance my coding journ
 5. [Rock-Paper-Sciccors Game](Beginner/RPS_game.py)<br>
 6. [Compare PDF](Beginner/compare_pdf.py)<br>
 7. [Dice Rolling Game](Beginner/dice_rolling_game.py)<br>
-8. [QR Code Generator](Beginner/qr_code_generator.py)
+8. [QR Code Generator](Beginner/qr_code_generator.py)<br>
+9. [Mastermind Game](Beginner/mastermind_game.py)<br>
