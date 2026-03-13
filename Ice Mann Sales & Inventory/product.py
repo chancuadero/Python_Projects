@@ -25,14 +25,13 @@ class IceTracker:
     def process_sale(self, quantity, name):
         if name in self.inventory.keys():
             product = self.inventory[name]
-            if name == product.name:
-                if quantity <= product.current_stock:
-                    product.current_stock -= quantity
-                    self.revenue = quantity * product.price
-                    print(f"Sold {quantity} of {name}")
-                    print(f"Revenue: ${self.revenue}")
-                else:
-                    print("Not enough ice cubes!")
+            if quantity <= product.current_stock:
+                product.current_stock -= quantity
+                self.revenue += quantity * product.price
+                print(f"Sold {quantity} of {name}")
+                print(f"Revenue: ${self.revenue}")
+            else:
+                print("Not enough ice cubes!")
         else:
             print("Incorrect product name! Sample: 1kg ice cubes")
 
