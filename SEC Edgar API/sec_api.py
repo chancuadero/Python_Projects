@@ -19,3 +19,4 @@ for cik in firstEntry:
     cik_str.append(format_cik)
 
 print(cik_str[:10])
+
