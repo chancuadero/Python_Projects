@@ -12,7 +12,7 @@ HEADERS = {
 }
 
 st.set_page_config(
-    page_title="Proxy Voting Comparison Tool",
+    page_title="Proxy Voting Tool",
     layout="wide"
 )
 
