@@ -16,7 +16,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📊 Proxy Voting Comparison Tool")
+st.title("📊 Proxy Voting Tool")
 
 # =========================================================
 # LOAD ALL N-PX FILERS
