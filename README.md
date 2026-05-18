@@ -11,3 +11,4 @@ This repository is a collection of my Python projects to enhance my coding journ
 7. [Dice Rolling Game](Beginner/dice_rolling_game.py)<br>
 8. [QR Code Generator](Beginner/qr_code_generator.py)<br>
 9. [Mastermind Game](Beginner/mastermind_game.py)<br>
+10. [Proxy Voting Tool](SECEdgarAPI/sec_api.py)<br>
