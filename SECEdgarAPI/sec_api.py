@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+import plotly.express as px
 
 # =========================================================
 # CONFIG
@@ -411,66 +412,112 @@ primary_doc = npx_df.loc[selected_filing, "primaryDocument"]
 if st.button("🚀 Extract Agenda & Votes"):
 
     with st.spinner("Extracting voting data from SEC XML filing..."):
-
-        votes_df, source_url = get_voting_data(
-            selected_cik,
-            acc_no,
-            primary_doc
-        )
+        votes_df, source_url = get_voting_data(selected_cik, acc_no, primary_doc)
 
         if not votes_df.empty:
-
             st.success("Voting data extracted successfully!")
+            
+            # Create two clean tabs at the top of your dashboard
+            tab1, tab2 = st.tabs(["📊 Analytics Dashboard", "📋 Raw Data Table"])
 
-            st.markdown("### Source XML")
-            st.code(source_url)
+            # ==========================================
+            # TAB 1: ANALYTICS DASHBOARD
+            # ==========================================
+            with tab1:
+                st.subheader(f"Voting Insights for {selected_fund_name}")
+                
+                # --- Helper Function to Categorize Agendas ---
+                def categorize_agenda(agenda_text):
+                    text = str(agenda_text).lower()
+                    if "elect" in text or "director" in text or "nominee" in text:
+                        return "Board Elections"
+                    elif "compensation" in text or "say on pay" in text or "equity plan" in text or "auditor" in text:
+                        return "Executive Pay & Governance"
+                    elif "shareholder proposal" in text or "climate" in text or "human rights" in text:
+                        return "Shareholder & ESG Proposals"
+                    else:
+                        return "Routine / Other Business"
 
-            # -------------------------------------------------
-            # SEARCH FILTER
-            # -------------------------------------------------
+                # Apply categorization to the DataFrame
+                votes_df["Agenda Category"] = votes_df["Agenda"].apply(categorize_agenda)
 
-            search_query = st.text_input(
-                "🔎 Filter by Company Name"
-            )
+                # --- KPI Metrics Row ---
+                total_votes = len(votes_df)
+                for_votes = len(votes_df[votes_df["Status"].str.lower() == "for"])
+                against_votes = len(votes_df[votes_df["Status"].str.lower() == "against"])
+                
+                col1, col2, col3, col4 = st.columns(4)
+                col1.metric("Total Items Voted", f"{total_votes:,}")
+                col2.metric("🟢 'FOR' Votes", f"{for_votes:,}", f"{(for_votes/total_votes*100):.1f}%" if total_votes else "0%")
+                col3.metric("🔴 'AGAINST' Votes", f"{against_votes:,}", f"-{(against_votes/total_votes*100):.1f}%" if total_votes else "0%", delta_color="inverse")
+                
+                # Handle Shares Voted calculation safely
+                votes_df["Shares Cleaned"] = pd.to_numeric(votes_df["Shares Voted"].str.replace(",", ""), errors="coerce").fillna(0)
+                total_shares = votes_df["Shares Cleaned"].sum()
+                col4.metric("Total Shares Swung", f"{int(total_shares):,}")
 
-            filtered_df = votes_df.copy()
+                st.markdown("---")
 
-            if search_query:
+                # --- Charts Section ---
+                chart_col1, chart_col2 = st.columns(2)
 
-                filtered_df = filtered_df[
-                    filtered_df["Company"].str.contains(
-                        search_query,
-                        case=False,
-                        na=False
+                with chart_col1:
+                    st.markdown("#### Overall Voting Distribution")
+                    # Pie chart showing For vs Against vs Abstain
+                    vote_counts = votes_df["Status"].value_counts().reset_index()
+                    vote_counts.columns = ["Vote Decision", "Count"]
+                    fig_pie = px.pie(
+                        vote_counts, 
+                        values="Count", 
+                        names="Vote Decision",
+                        color="Vote Decision",
+                        color_discrete_map={"FOR": "#2ecc71", "AGAINST": "#e74c3c", "ABSTAIN": "#f1c40f"},
+                        hole=0.4
                     )
-                ]
+                    st.plotly_chart(fig_pie, use_container_width=True)
 
-            st.markdown("### Voting Records")
+                with chart_col2:
+                    st.markdown("#### Voting Behavior by Agenda Type")
+                    # Grouped Bar Chart: Category vs Vote Type
+                    category_votes = votes_df.groupby(["Agenda Category", "Status"]).size().reset_index(name="Count")
+                    fig_bar = px.bar(
+                        category_votes,
+                        x="Agenda Category",
+                        y="Count",
+                        color="Status",
+                        barmode="group",
+                        color_discrete_map={"FOR": "#2ecc71", "AGAINST": "#e74c3c", "ABSTAIN": "#f1c40f"},
+                        labels={"Count": "Number of Proposals"}
+                    )
+                    fig_bar.update_layout(xaxis_title=None)
+                    st.plotly_chart(fig_bar, use_container_width=True)
 
-            st.dataframe(
-                filtered_df,
-                use_container_width=True,
-                hide_index=True
-            )
+            # ==========================================
+            # TAB 2: RAW DATA TABLE (Your existing UI)
+            # ==========================================
+            with tab2:
+                st.markdown(f"#### Source XML: `{source_url}`")
+                
+                search_query = st.text_input("🔎 Filter by Company Name")
+                filtered_df = votes_df.copy()
 
-            # -------------------------------------------------
-            # DOWNLOAD CSV
-            # -------------------------------------------------
+                if search_query:
+                    filtered_df = filtered_df[
+                        filtered_df["Company"].str.contains(search_query, case=False, na=False)
+                    ]
 
-            csv = filtered_df.to_csv(index=False).encode("utf-8")
+                st.dataframe(
+                    filtered_df[["Company", "Agenda", "Vote", "Status", "Meeting Date", "Shares Voted"]],
+                    use_container_width=True,
+                    hide_index=True
+                )
 
-            st.download_button(
-                label="⬇ Download CSV",
-                data=csv,
-                file_name=(
-                    f"{selected_fund_name}_votes.csv"
-                ),
-                mime="text/csv"
-            )
-
+                csv = filtered_df.to_csv(index=False).encode("utf-8")
+                st.download_button(
+                    label="⬇ Download CSV",
+                    data=csv,
+                    file_name=f"{selected_fund_name}_votes.csv",
+                    mime="text/csv"
+                )
         else:
-
-            st.warning(
-                "Could not find structured voting data "
-                "inside this filing."
-            )
+            st.warning("Could not find structured voting data inside this filing.")
