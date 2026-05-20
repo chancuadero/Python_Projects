@@ -9,7 +9,7 @@ import plotly.express as px
 # =========================================================
 
 HEADERS = {
-    "User-Agent": "ChanAutomatedSolutions (chancuadero22@gmail.com)"
+    "User-Agent": "ChanAutomatedSolutions (info@chanautomatedsolutions.com)"
 }
 
 st.set_page_config(
