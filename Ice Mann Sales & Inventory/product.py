@@ -8,7 +8,6 @@ class Product:
         return f"Name: {self.name}, Price: ${self.price}, Stock: {self.current_stock}"
 
 small_bag = Product("1kg ice cubes", 10, 20)
-print(small_bag)
 
 class IceTracker:
     def __init__(self):
@@ -38,6 +37,21 @@ class IceTracker:
 
 my_tracker = IceTracker()
 my_tracker.add_product(small_bag)
-my_tracker.display_inventory()
-my_tracker.process_sale(1, "1kg ice cubes")
-my_tracker.display_inventory()
+
+while True:
+    print("\n--- ICE TRACKER MENU ---")
+    print("1. View Inventory")
+    print("2. Record a Sale")
+    print("3. Exit")
+
+    choice = int(input("Select an option: "))
+
+    if choice == 1:
+        my_tracker.display_inventory()
+    elif choice == 2:
+        quantity = int(input("Quantity: "))
+        name = input("Name: ")
+        my_tracker.process_sale(quantity, name)
+    elif choice == 3:
+        print("Goodbye!")
+        break
